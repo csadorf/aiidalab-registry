@@ -330,9 +330,9 @@
         "state": "registered"
       },
       "gitinfo": {
-        "HEAD": "bb18162263f27f7c7d6c069a98c50cafd0d92935",
-        "refs/heads/develop": "bb18162263f27f7c7d6c069a98c50cafd0d92935",
-        "refs/heads/master": "0305d96701732dfa8ec7acb20ec6361cb811ccfa",
+        "HEAD": "b15d6584fc2482f7266aa28ea01a3a35bc25fae8",
+        "refs/heads/develop": "b15d6584fc2482f7266aa28ea01a3a35bc25fae8",
+        "refs/heads/master": "b15d6584fc2482f7266aa28ea01a3a35bc25fae8",
         "refs/heads/support/aiida-0.12.x": "f41f12d6068e0c7a9828a9efe9a33fd962b651eb",
         "refs/pull/1/head": "15143dd4b107b70cc8e563babde262a86a6043a1",
         "refs/pull/10/head": "9752741512e8e7258b877388c683ac50d47fa12d",
@@ -343,6 +343,8 @@
         "refs/pull/15/head": "be05d62dbd849f770676e44bae42a2791c1fa694",
         "refs/pull/16/head": "71da556aeb3868c3dbe79f212275a4775e958739",
         "refs/pull/17/head": "5c84d2a5db7cdc5f420f1382a92659806f98f36a",
+        "refs/pull/18/head": "0df400cd4a9fad37232a4b98468450af8c80dd6d",
+        "refs/pull/19/head": "6dae11d4e1b8e3f63c3d89265243e4d3da49e1c4",
         "refs/pull/2/head": "14063450eba7953dbe8cb74f6bbf96717d9a18c6",
         "refs/pull/3/head": "9ef651cd37b94f5679accfe06d577094b12bb4d9",
         "refs/pull/4/head": "7a3c0ebc8c1c5459e4370a75c42ead7fd4b55b38",
