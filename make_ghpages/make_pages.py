@@ -14,6 +14,7 @@ import exceptions as exc
 ## Requires jinja2 >= 2.9
 from jinja2 import Environment, PackageLoader, select_autoescape
 import cachecontrol
+import click
 import jsonschema
 import requests
 
@@ -109,7 +110,7 @@ def get_logo_url(logo_rel_path, meta_url):
     return logo_url
 
 
-def fetch_app_data(app_data, app_name):
+def fetch_app_data(app_data, app_name, metadata_schema):
     # Get Git URL, fail build if git_url is not found or wrong
     if 'git_url' in app_data:
         hosted_on = get_hosted_on(app_data['git_url'])
@@ -122,6 +123,9 @@ def fetch_app_data(app_data, app_name):
         meta_info = get_meta_info(app_data['meta_url'])
     else:
         raise exc.MissingMetadata(f"No 'meta_url' key for {app_name!r} in apps.json")
+
+    # Validate fetched app metadata:
+    jsonschema.validate(instance=meta_info, schema=metadata_schema)
 
     # Check if categories are specified, warn if not
     if 'categories' not in app_data:
@@ -155,12 +159,18 @@ def generate_apps_meta(apps_data, categories_data):
     print("Fetching app data...")
     for app_name in sorted(apps_data.keys()):
         print(f"  - {app_name}")
-        app_data = fetch_app_data(apps_data[app_name], app_name)
-        app_data['name'] = app_name
-        app_data['subpage'] = os.path.join('apps', get_html_app_fname(app_name))
-        apps_meta['apps'][app_name] = app_data
+        try:
+            app_data = fetch_app_data(
+                apps_data[app_name], app_name,
+                {"$ref": "https://aiidalab.github.io/aiidalab-registry/schemas/v1/metadata.schema.json"})
+        except jsonschema.exceptions.ValidationError as error:
+            click.secho(f"Metadata for app '{app_name}' failed validation, skipping.", fg="yellow")
+            continue
+        else:
+            app_data['name'] = app_name
+            app_data['subpage'] = os.path.join('apps', get_html_app_fname(app_name))
+            apps_meta['apps'][app_name] = app_data
 
-    validate_apps_meta(apps_meta)
     return apps_meta
 
 
@@ -228,6 +238,7 @@ if __name__ == '__main__':
 
     # Generate the apps_meta data
     apps_meta = generate_apps_meta(apps_data, categories_data)
+    validate_apps_meta(apps_meta)
 
     # Build the HTML pages
     build_pages(apps_meta)
